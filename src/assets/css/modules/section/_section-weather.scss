@@ -1,0 +1,48 @@
+.section-weather {
+
+  &__title {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 70px;
+    line-height: 80px;
+    margin-bottom: 32px;
+    margin-top: 15px;
+    text-align: center;
+  }
+
+  &__note {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #767676;
+  }
+
+  &__grid {
+    grid-gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__location {
+    max-width: 825px;
+    margin: 0 auto 80px;
+  }
+
+  &__item {
+    width: calc(25% - 15px);
+
+    @include lg-screen {
+      width: calc(33.333% - 15px);
+    }
+
+    @include md-screen {
+      width: calc(50% - 10px);
+    }
+
+    @include xs-screen {
+      width: 100%;
+    }
+  }
+}

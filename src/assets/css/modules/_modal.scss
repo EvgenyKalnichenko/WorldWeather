@@ -1,0 +1,88 @@
+.modal {
+  $block: &;
+  //position: fixed;
+  //top: 0;
+  //left: 0;
+  //width: 100%;
+  //height: 100%;
+  //overflow-x: hidden;
+  //overflow-y: auto;
+  //display: flex;
+  //overscroll-behavior: contain;
+  //flex-direction: column;
+  //padding: 0;
+  //visibility: visible;
+  //transition-duration: .3s;
+  //transition-property: opacity, visibility;
+  //background: rgba(0, 0, 0, 0.4);
+  display: inline-flex;
+
+
+  &__inner {
+    background: #FFFFFF;
+    box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.14), 0px 6px 30px rgba(0, 0, 0, 0.12), 0px 8px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    position: relative;
+    color: $grey;
+    padding: 45px;
+
+    @include xs-screen {
+      padding: 35px 20px;
+    }
+  }
+
+  &__container {
+    max-width: $container + $fields*2;
+    width: 100%;
+    padding-left: 350px;
+    padding-right: 350px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    margin: auto;
+
+    @include xl-screen {
+      padding: 30px 260px;
+    }
+
+    @include lg-screen {
+      padding: 30px 230px;
+    }
+
+    @include md-screen {
+      padding: 30px 90px;
+    }
+    @include xs-screen {
+      padding: 30px 10px;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    z-index: 10;
+
+    .icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 12px;
+    }
+
+    &:hover {
+      color: $accent;
+    }
+  }
+}
+
