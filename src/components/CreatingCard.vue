@@ -15,7 +15,7 @@
         <div class="form-group">
           <input
             ref="input"
-            @input="mask"
+            @input="v$.city.$touch"
             class="form-group__input"
             type="text" v-model="city"
             placeholder="Search city">
@@ -32,7 +32,7 @@
 import CustomModal from '@/components/CustomModal'
 import { mapActions } from 'vuex'
 import useVuelidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { required, minLength } from '@vuelidate/validators'
 
 export default {
   name: 'CreatingCard',
@@ -42,7 +42,10 @@ export default {
   },
   validations () {
     return {
-      city: { required } // Matches this.firstName
+      city: {
+        required,
+        minLength: minLength(2)
+      } // Matches this.firstName
     }
   },
   data () {
@@ -54,14 +57,10 @@ export default {
   methods: {
     ...mapActions(['getWeatherData']),
     ...mapActions(['removeWeatherData']),
-    confirm () {
-      // some code...
-      this.show = false
-    },
     clear () {
       this.city = ''
     },
-    cancel (close) {
+    cancel () {
       this.removeWeatherData(this.city)
     },
     async add () {
@@ -70,6 +69,7 @@ export default {
       }
       this.getWeatherData(options)
       this.show = false
+      this.city = ''
     },
     mask () {
       this.city = this.city.replace(/[^A-Za-z]/g, '')
@@ -114,4 +114,5 @@ export default {
 .modal__input {
   margin-bottom: 120px;
 }
+
 </style>
