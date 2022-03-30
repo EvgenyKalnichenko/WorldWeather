@@ -36,6 +36,8 @@ export default {
   },
   computed: {
     ...mapGetters(['cities'])
+  },
+  mounted () {
   }
 }
 </script>

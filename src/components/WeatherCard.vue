@@ -13,7 +13,9 @@
         <span>Humidity</span><span>{{ humidity }} %</span>
       </div>
     </div>
-    <div class="weather-card__date">5 minutes ago</div>
+    <div class="weather-card__date">
+      <VTime :date="time" />
+    </div>
     <div class="weather-card__panel">
       <a href="#" class="btn" @click.prevent="remove">Remove</a>
       <a href="#" class="btn" @click.prevent="reload">Reload</a>
@@ -23,6 +25,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import VTime from '@/components/app/v-time'
 
 export default {
   name: 'WeatherCard',
@@ -31,19 +34,27 @@ export default {
       type: Object
     }
   },
+  components: {
+    VTime
+  },
   data () {
     return {
       name: this.value.name,
       country: this.value.sys.country,
       weather: this.value.weather[0].main,
       temp: this.value.main.temp,
-      humidity: this.value.main.humidity
+      humidity: this.value.main.humidity,
+      time: this.value.time
     }
   },
   methods: {
     ...mapActions(['removeWeatherData']),
+    ...mapActions(['getWeatherData']),
     reload () {
       console.log('reload')
+      this.getWeatherData({
+        city: this.name
+      })
     },
     remove () {
       this.removeWeatherData(this.name)

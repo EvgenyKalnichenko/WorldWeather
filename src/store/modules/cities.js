@@ -1,53 +1,13 @@
 export default {
   state: {
-    cities: [
-      {
-        coord: {
-          lon: 45.0046,
-          lat: 53.2007
-        },
-        weather: [{
-          id: 803,
-          main: 'Clouds',
-          description: 'broken clouds',
-          icon: '04d'
-        }],
-        base: 'stations',
-        main: {
-          temp: 2,
-          feels_like: -2.57,
-          temp_min: 2,
-          temp_max: 2,
-          pressure: 1000,
-          humidity: 98,
-          sea_level: 1000,
-          grnd_level: 982
-        },
-        visibility: 621,
-        wind: {
-          speed: 5.29,
-          deg: 250,
-          gust: 12.7
-        },
-        clouds: {
-          all: 75
-        },
-        dt: 1648545506,
-        sys: {
-          country: 'RU',
-          sunrise: 1648521684,
-          sunset: 1648567681
-        },
-        timezone: 10800,
-        id: 511565,
-        name: 'Penza',
-        cod: 200
-      }
-    ]
+    cities: []
   },
   mutations: {
     SET_CITY (state, data) {
       state.cities.push(data)
+    },
+    RELOAD_WEATHER (state, data) {
+      state.cities[data.index] = data.weather
     },
     REMOVE_CITY (state, city) {
       state.cities = state.cities.filter(el => el.name !== city)
@@ -56,16 +16,19 @@ export default {
   actions: {
     async getWeatherData (context, { city }) {
       try {
-        const key = '1049d47c1f681e1591ae1134008c4dd0'
-        const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?units=metric&lang=en&APPID=${key}&q=${city}`)
+        const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?units=metric&lang=en&APPID=${process.env.VUE_APP_KEY_API}&q=${city}`)
 
         if (response.ok) {
           const json = await response.json()
-          console.log(json)
-          if (context.state.cities.find(el => el.name === city)) {
+          const index = context.state.cities.findIndex(el => el.name === city)
+          const time = +new Date()
+          json.time = time
+          if (index >= 0) {
+            context.commit('RELOAD_WEATHER', { weather: json, index })
             console.log('город уже есть в списке')
+          } else {
+            context.commit('SET_CITY', json)
           }
-          context.commit('SET_CITY', json)
         } else {
           alert('Ошибка HTTP: ' + response.status)
         }
@@ -76,10 +39,8 @@ export default {
       }
     },
     async getWeatherLocation (context, options) {
-      console.log(options)
       try {
-        const key = '1049d47c1f681e1591ae1134008c4dd0'
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${options.lat}&lon=${options.lon}&appid=${key}`)
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${options.lat}&lon=${options.lon}&appid=${process.env.VUE_APP_KEY_API}`)
 
         if (response.ok) {
           const json = await response.json()
@@ -95,8 +56,6 @@ export default {
       return false
     },
     async removeWeatherData (context, city) {
-      console.log(city)
-      // const weatherList = Array.from(context.state.cities).filter(el => el.name !== city)
       context.commit('REMOVE_CITY', city)
     }
   },

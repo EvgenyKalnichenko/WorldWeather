@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="weather-card__date">
-      <VTime />
+      <VTime :date="time" />
     </div>
     <div class="weather-card__panel">
       <a href="#" class="btn" @click.prevent="reload">Reload</a>
@@ -43,7 +43,8 @@ export default {
       humidity: '',
       lat: '',
       lon: '',
-      loading: false
+      loading: false,
+      time: ''
     }
   },
   mounted () {
@@ -58,14 +59,11 @@ export default {
       })
     })
 
-    promise.then(async (value) => {
-      const result = await this.getWeatherLocation(value)
-      this.name = result.name
-      this.country = result.sys.country
-      this.weather = result.weather[0].main
-      this.temp = result.main.temp
-      this.humidity = result.main.humidity
+    promise.then((value) => {
+      this.fetchingData(value)
       this.loading = false
+      this.lat = value.lat
+      this.lon = value.lon
     }).catch((error) => {
       console.log(error)
       this.loading = false
@@ -74,8 +72,22 @@ export default {
   methods: {
     ...mapActions(['getWeatherLocation']),
     ...mapActions(['removeWeatherData']),
+    async fetchingData (value) {
+      const result = await this.getWeatherLocation(value)
+      this.name = result.name
+      this.country = result.sys.country
+      this.weather = result.weather[0].main
+      this.temp = result.main.temp
+      this.humidity = result.main.humidity
+      this.time = +new Date()
+    },
     reload () {
       console.log('reload')
+      const options = {
+        lat: this.lat,
+        lon: this.lon
+      }
+      this.fetchingData(options)
     }
   }
 }
