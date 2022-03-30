@@ -1,7 +1,7 @@
 <template>
   <div class="weather-card">
     <div class="weather-card__title">{{ name }}</div>
-    <div class="weather-card__country">{{ country }}</div>
+    <div class="weather-card__location">{{ country }}</div>
     <div class="weather-card__list">
       <div class="weather-card__row">
         <span>Weather</span><span>{{ weather }}</span>

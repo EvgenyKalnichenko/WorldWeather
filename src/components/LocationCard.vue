@@ -2,7 +2,7 @@
   <div class="weather-card">
     <v-loader v-if="loading"/>
     <div class="weather-card__title">{{ name }}</div>
-    <div class="weather-card__country">Your current location</div>
+    <div class="weather-card__location">Your current location</div>
     <div class="weather-card__list">
       <div class="weather-card__row">
         <span>Weather</span><span>{{ weather }}</span>
