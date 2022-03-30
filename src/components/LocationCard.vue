@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="weather-card__date">
-      <VTime :date="time" />
+      <VTime v-if="time" :date="time" />
     </div>
     <div class="weather-card__panel">
       <a href="#" class="btn" @click.prevent="reload">Reload</a>
@@ -82,7 +82,6 @@ export default {
       this.time = +new Date()
     },
     reload () {
-      console.log('reload')
       const options = {
         lat: this.lat,
         lon: this.lon

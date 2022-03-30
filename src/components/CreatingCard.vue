@@ -20,7 +20,6 @@
           <div class="error-msg">{{ error.$message }}</div>
         </div>
       </div>
-
     </div>
   </custom-modal>
 </template>
@@ -67,16 +66,21 @@ export default {
         city: this.city
       }
       this.getWeatherData(options)
+      this.show = false
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .btn-circle {
   position: fixed;
   bottom: 40px;
   right: 40px;
+  @media (max-width: 768px) {
+    bottom: 20px;
+    right: 20px;
+  }
 }
 
 .modal__text {

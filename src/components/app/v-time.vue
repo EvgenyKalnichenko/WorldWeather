@@ -9,24 +9,35 @@ export default {
   name: 'v-time',
   props: {
     date: {
-      type: Number,
-      default: new Date()
+      type: Number
     }
   },
   data () {
-    return {}
-  },
-  mounted () {
-    console.log(this.makeCalculate())
-  },
-  computed: {
-    formattedDate () {
-      return moment(this.date).fromNow()
+    return {
+      timeOut: null,
+      formattedDate: null,
+      startTime: this.date
     }
   },
   methods: {
-    makeCalculate () {
-      // return this.$moment(new Date()).format('DD.MM.YYYY')
+    generatedDate (time) {
+      this.formattedDate = moment(time).fromNow()
+      this.timeOut = setInterval(() => {
+        this.formattedDate = moment(time).fromNow()
+      }, 1000 * 60)
+      console.log('форматирую дату', this.formattedDate)
+    }
+  },
+  mounted () {
+    this.generatedDate(this.startTime)
+  },
+  unmounted () {
+    clearTimeout(this.timeOut)
+  },
+  watch: {
+    'date' () {
+      clearTimeout(this.timeOut)
+      this.generatedDate(this.date)
     }
   }
 }

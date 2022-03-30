@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="weather-card__date">
-      <VTime :date="time" />
+      <VTime :date="time"/>
     </div>
     <div class="weather-card__panel">
       <a href="#" class="btn" @click.prevent="remove">Remove</a>
@@ -58,6 +58,16 @@ export default {
     },
     remove () {
       this.removeWeatherData(this.name)
+    }
+  },
+  watch: {
+    'value' () {
+      this.name = this.value.name
+      this.country = this.value.sys.country
+      this.weather = this.value.weather[0].main
+      this.temp = this.value.main.temp
+      this.humidity = this.value.main.humidity
+      this.time = this.value.time
     }
   }
 }
