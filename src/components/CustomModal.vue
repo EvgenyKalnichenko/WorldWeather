@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 ::v-deep .modal-container {
   display: flex;
   justify-content: center;
@@ -57,7 +57,10 @@ export default {
   font-weight: 700;
   font-size: 32px;
   line-height: 38px;
-  font-weight: 700;
+  @media (max-width: 768px) {
+    font-size: 24px;
+    line-height: 32px;
+  }
 }
 
 .modal__content {

@@ -7,14 +7,18 @@
   </div>
   <custom-modal v-model="show" @clear="clear" @add="add" @cancel="cancel">
     <template v-slot:title>Choose a city</template>
-    <div class="modal__text">
+    <div class="text-grey">
       <p>To find city start typing and pick one from the suggestions</p>
-      {{v$}}
     </div>
     <div class="modal__input">
       <div :class="{ error: v$.city.$errors.length }">
         <div class="form-group">
-          <input class="form-group__input" type="text" v-model="city" placeholder="Search city">
+          <input
+            ref="input"
+            @input="mask"
+            class="form-group__input"
+            type="text" v-model="city"
+            placeholder="Search city">
         </div>
         <div class="input-errors" v-for="error of v$.city.$errors" :key="error.$uid">
           <div class="error-msg">{{ error.$message }}</div>
@@ -29,7 +33,6 @@ import CustomModal from '@/components/CustomModal'
 import { mapActions } from 'vuex'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-const mustBeCool = (value) => value.replace(/[a-z.]/)
 
 export default {
   name: 'CreatingCard',
@@ -39,13 +42,13 @@ export default {
   },
   validations () {
     return {
-      city: { required, mustBeCool } // Matches this.firstName
+      city: { required } // Matches this.firstName
     }
   },
   data () {
     return {
       show: false,
-      city: 'Moscow'
+      city: ''
     }
   },
   methods: {
@@ -67,6 +70,18 @@ export default {
       }
       this.getWeatherData(options)
       this.show = false
+    },
+    mask () {
+      this.city = this.city.replace(/[^A-Za-z]/g, '')
+    }
+  },
+  watch: {
+    'show' () {
+      if (this.show) {
+        setTimeout(() => {
+          this.$refs.input.focus()
+        }, 600)
+      }
     }
   }
 }
@@ -83,12 +98,17 @@ export default {
   }
 }
 
-.modal__text {
+.text-grey {
   font-weight: 400;
   font-size: 24px;
   line-height: 24px;
   margin-bottom: 70px;
   color: #767676;
+  @media (max-width: 768px) {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 24px;
+  }
 }
 
 .modal__input {

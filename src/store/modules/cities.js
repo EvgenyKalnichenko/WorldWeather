@@ -1,3 +1,5 @@
+import { writeToLocalStore } from '@/assets/js/utils'
+
 export default {
   state: {
     cities: []
@@ -5,12 +7,15 @@ export default {
   mutations: {
     SET_CITY (state, data) {
       state.cities.push(data)
+      writeToLocalStore(state.cities)
     },
     RELOAD_WEATHER (state, data) {
       state.cities[data.index] = data.weather
+      writeToLocalStore(state.cities)
     },
     REMOVE_CITY (state, city) {
       state.cities = state.cities.filter(el => el.name !== city)
+      writeToLocalStore(state.cities)
     },
     SET_CITIES (state, cities) {
       state.cities = cities
@@ -23,11 +28,14 @@ export default {
 
         if (response.ok) {
           const json = await response.json()
-          const index = context.state.cities.findIndex(el => el.name === city)
+          const index = context.state.cities.findIndex(el => el.name.toUpperCase() === city.toUpperCase())
           const time = +new Date()
           json.time = time
           if (index >= 0) {
-            context.commit('RELOAD_WEATHER', { weather: json, index })
+            context.commit('RELOAD_WEATHER', {
+              weather: json,
+              index
+            })
             console.log('город уже есть в списке')
           } else {
             context.commit('SET_CITY', json)
@@ -62,8 +70,7 @@ export default {
       context.commit('REMOVE_CITY', city)
     },
     localStorageData (context) {
-      const data = localStorage.cities
-      console.log(data)
+      const data = JSON.parse(localStorage.getItem('cities'))
       if (data) {
         context.commit('SET_CITIES', data)
       }

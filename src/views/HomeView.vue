@@ -42,13 +42,6 @@ export default {
   },
   mounted () {
     this.localStorageData()
-  },
-  watch: {
-    'cities' () {
-      const noReativeVar = JSON.stringify(this.cities)
-      console.log(noReativeVar)
-      localStorage.setItem('cities', noReativeVar)
-    }
   }
 }
 </script>

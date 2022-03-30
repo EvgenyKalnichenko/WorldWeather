@@ -25,7 +25,6 @@ export default {
       this.timeOut = setInterval(() => {
         this.formattedDate = moment(time).fromNow()
       }, 1000 * 60)
-      console.log('форматирую дату', this.formattedDate)
     }
   },
   mounted () {
