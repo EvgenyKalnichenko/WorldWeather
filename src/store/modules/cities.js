@@ -11,6 +11,9 @@ export default {
     },
     REMOVE_CITY (state, city) {
       state.cities = state.cities.filter(el => el.name !== city)
+    },
+    SET_CITIES (state, cities) {
+      state.cities = cities
     }
   },
   actions: {
@@ -57,6 +60,13 @@ export default {
     },
     async removeWeatherData (context, city) {
       context.commit('REMOVE_CITY', city)
+    },
+    localStorageData (context) {
+      const data = localStorage.cities
+      console.log(data)
+      if (data) {
+        context.commit('SET_CITIES', data)
+      }
     }
   },
   getters: {

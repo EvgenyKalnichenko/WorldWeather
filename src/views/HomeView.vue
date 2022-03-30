@@ -25,7 +25,7 @@
 import WeatherCard from '@/components/WeatherCard.vue'
 import CreatingCard from '@/components/CreatingCard.vue'
 import LocationCard from '@/components/LocationCard.vue'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'HomeView',
@@ -34,10 +34,21 @@ export default {
     WeatherCard,
     LocationCard
   },
+  methods: {
+    ...mapActions(['localStorageData'])
+  },
   computed: {
     ...mapGetters(['cities'])
   },
   mounted () {
+    this.localStorageData()
+  },
+  watch: {
+    'cities' () {
+      const noReativeVar = JSON.stringify(this.cities)
+      console.log(noReativeVar)
+      localStorage.setItem('cities', noReativeVar)
+    }
   }
 }
 </script>
