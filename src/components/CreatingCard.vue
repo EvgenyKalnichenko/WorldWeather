@@ -61,6 +61,7 @@ export default {
       this.city = ''
     },
     cancel () {
+      this.show = false
       this.removeWeatherData(this.city)
     },
     async add () {
